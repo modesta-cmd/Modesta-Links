@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modesta | موديستا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A96E; --gold-light: #E4C98A; --gold-dark: #9E7A45;
+      --cream: #FAF6F0; --warm-white: #FDF9F4;
+      --ink: #2C2416; --ink-muted: #6B5C44;
+      --border: rgba(201,169,110,0.25);
+    }
+    html, body { height: 100%; font-family: 'Noto Naskh Arabic', serif; background: var(--cream); color: var(--ink); }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,169,110,0.13) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 100%, rgba(201,169,110,0.09) 0%, transparent 60%);
+    }
+    .top-border { position: fixed; top:0; left:0; right:0; height:3px; z-index:100;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
+    .page { position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; padding:60px 20px 80px; max-width:480px; margin:0 auto; }
+
+    .avatar-ring { width:96px; height:96px; border-radius:50%;
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold-light),var(--gold-dark));
+      padding:2px; margin-bottom:20px; box-shadow:0 8px 32px rgba(201,169,110,0.3);
+      animation:fadeDown .8s ease both; }
+    .avatar-inner { width:100%; height:100%; border-radius:50%; background:var(--warm-white);
+      display:flex; align-items:center; justify-content:center; flex-direction:column; gap:2px; }
+    .brand-en { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:500;
+      letter-spacing:3px; color:var(--gold-dark); line-height:1; }
+    .brand-ar-sm { font-size:10px; color:var(--ink-muted); line-height:1; }
+
+    .brand-title { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:300;
+      letter-spacing:8px; color:var(--ink); text-transform:uppercase; animation:fadeDown .9s .1s ease both; }
+    .brand-sub { font-size:13px; color:var(--gold); letter-spacing:2px; margin-top:4px; margin-bottom:4px; animation:fadeDown 1s .2s ease both; }
+    .brand-slogan { font-size:12.5px; color:var(--ink-muted); margin-bottom:32px; animation:fadeDown 1s .3s ease both; }
+
+    .divider { display:flex; align-items:center; gap:12px; width:100%; margin-bottom:28px; animation:fadeDown 1s .35s ease both; }
+    .divider::before,.divider::after { content:''; flex:1; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); }
+    .divider-gem { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); flex-shrink:0; }
+
+    .links { display:flex; flex-direction:column; gap:12px; width:100%; }
+
+    .link-card { position:relative; display:flex; align-items:center; gap:14px; padding:15px 20px;
+      background:var(--warm-white); border:1px solid var(--border); border-radius:12px;
+      text-decoration:none; color:var(--ink); overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      animation:fadeUp .7s calc(var(--i)*.09s) ease both; cursor:pointer; }
+    .link-card::before { content:''; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(135deg,rgba(201,169,110,0.06),transparent 60%); }
+    .link-card:hover { transform:translateY(-3px); box-shadow:0 12px 36px rgba(201,169,110,0.18); border-color:rgba(201,169,110,0.5); }
+
+    .link-icon { width:40px; height:40px; border-radius:10px; flex-shrink:0;
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+      display:flex; align-items:center; justify-content:center; }
+    .link-icon svg { width:20px; height:20px; fill:white; }
+    .link-text { flex:1; }
+    .link-name { font-size:15px; font-weight:600; line-height:1.3; }
+    .link-desc { font-size:12px; color:var(--ink-muted); margin-top:2px; }
+    .link-arrow { color:var(--gold); font-size:18px; transition:transform .2s ease; flex-shrink:0; }
+    .link-card:hover .link-arrow { transform:translateX(-5px); }
+
+    .footer { margin-top:44px; text-align:center; animation:fadeUp .7s .9s ease both; }
+    .footer-gems { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px; }
+    .footer-gems span { width:4px; height:4px; background:var(--gold); transform:rotate(45deg); display:inline-block; }
+    .footer-gems span.lg { width:6px; height:6px; }
+    .footer-text { font-family:'Cormorant Garamond',serif; font-size:12px; color:var(--ink-muted); letter-spacing:2px; }
+
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+
+    /* Edit modal */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(44,36,22,0.6); z-index:200; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--warm-white); border-radius:16px; padding:28px; width:90%; max-width:400px; border:1px solid var(--border); direction:rtl; }
+    .modal h3 { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--gold-dark); margin-bottom:16px; letter-spacing:2px; }
+    .modal label { font-size:12px; color:var(--ink-muted); display:block; margin-bottom:4px; }
+    .modal input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px;
+      font-family:inherit; font-size:13px; background:var(--cream); color:var(--ink);
+      margin-bottom:14px; outline:none; transition:border-color .2s; }
+    .modal input:focus { border-color:var(--gold); }
+    .modal-btns { display:flex; gap:10px; margin-top:4px; }
+    .btn-save { flex:1; padding:11px; background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+      color:white; border:none; border-radius:8px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .btn-cancel { padding:11px 18px; background:transparent; border:1px solid var(--border);
+      border-radius:8px; font-size:14px; cursor:pointer; color:var(--ink-muted); font-family:inherit; }
+
+    /* Edit toggle button */
+    .edit-fab { position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+      background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+      color:white; border:none; border-radius:24px; padding:12px 28px;
+      font-size:13px; font-family:'Noto Naskh Arabic',serif; cursor:pointer; z-index:150;
+      box-shadow:0 6px 24px rgba(201,169,110,0.4); letter-spacing:1px;
+      animation:fadeUp 1s 1s ease both; }
+    .edit-fab:hover { box-shadow:0 10px 32px rgba(201,169,110,0.5); }
+  </style>
+</head>
+<body>
+<div class="top-border"></div>
+
+<div class="page">
+  <div class="avatar-ring">
+    <div class="avatar-inner">
+      <span class="brand-en">M</span>
+      <span class="brand-ar-sm">موديستا</span>
+    </div>
+  </div>
+  <h1 class="brand-title">MODESTA</h1>
+  <p class="brand-sub">موديستا · الإسماعيلية</p>
+  <p class="brand-slogan">#أشيك_محجبة_في_مصر ✦</p>
+  <div class="divider"><div class="divider-gem"></div></div>
+
+  <div class="links" id="linksContainer"></div>
+
+  <div class="footer">
+    <div class="footer-gems"><span></span><span class="lg"></span><span></span></div>
+    <p class="footer-text">MODESTA · موديستا · ٢٠٢٥</p>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modalTitle">تعديل الرابط</h3>
+    <label>اسم الزر</label>
+    <input id="editName" type="text" />
+    <label>وصف قصير</label>
+    <input id="editDesc" type="text" />
+    <label>الرابط (URL)</label>
+    <input id="editUrl" type="text" />
+    <div class="modal-btns">
+      <button class="btn-save" onclick="saveEdit()">حفظ</button>
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<button class="edit-fab" onclick="toggleEditMode()">✦ تعديل الروابط</button>
+
+<script>
+const ICONS = {
+  facebook: `<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
+  instagram: `<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="white" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`,
+  tiktok: `<svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>`,
+  whatsapp: `<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+  shop: `<svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="1.5"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  location: `<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="none" stroke="white" stroke-width="2"/></svg>`
+};
+
+let links = [
+  { id:'facebook',  name:'Facebook',  desc:'تابعونا على فيسبوك',       url:'https://facebook.com/', icon:'facebook' },
+  { id:'instagram', name:'Instagram', desc:'أحدث المنتجات والعروض',     url:'https://instagram.com/', icon:'instagram' },
+  { id:'tiktok',    name:'TikTok',    desc:'ريلز وتجارب العملاء',       url:'https://tiktok.com/', icon:'tiktok' },
+  { id:'whatsapp',  name:'واتساب',    desc:'تواصلي معنا مباشرة',        url:'https://wa.me/20', icon:'whatsapp' },
+  { id:'shop',      name:'الكتالوج',  desc:'تصفحي كل منتجاتنا',         url:'#', icon:'shop' },
+  { id:'location',  name:'موقعنا',    desc:'الإسماعيلية — زوري محلنا',  url:'https://maps.google.com', icon:'location' },
+];
+
+let editMode = false;
+let currentEditIdx = null;
+
+function render() {
+  const container = document.getElementById('linksContainer');
+  container.innerHTML = links.map((l, i) => `
+    <a class="link-card" style="--i:${i+1}" href="${editMode ? '#' : l.url}" ${editMode ? '' : 'target="_blank"'} onclick="${editMode ? `openEdit(${i}); return false;` : ''}">
+      <div class="link-icon">${ICONS[l.icon]}</div>
+      <div class="link-text">
+        <div class="link-name">${l.name} ${editMode ? '<span style="font-size:11px;color:var(--gold)">← اضغط للتعديل</span>' : ''}</div>
+        <div class="link-desc">${l.desc}</div>
+      </div>
+      <span class="link-arrow">${editMode ? '✏️' : '←'}</span>
+    </a>
+  `).join('');
+}
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.querySelector('.edit-fab').textContent = editMode ? '✓ انتهيت من التعديل' : '✦ تعديل الروابط';
+  render();
+}
+
+function openEdit(idx) {
+  currentEditIdx = idx;
+  const l = links[idx];
+  document.getElementById('modalTitle').textContent = 'تعديل: ' + l.name;
+  document.getElementById('editName').value = l.name;
+  document.getElementById('editDesc').value = l.desc;
+  document.getElementById('editUrl').value = l.url;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+function saveEdit() {
+  links[currentEditIdx].name = document.getElementById('editName').value;
+  links[currentEditIdx].desc = document.getElementById('editDesc').value;
+  links[currentEditIdx].url  = document.getElementById('editUrl').value;
+  closeModal();
+  render();
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+render();
+</script>
+</body>
+</html>
